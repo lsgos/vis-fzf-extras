@@ -15,14 +15,14 @@ vis:map(vis.modes.INSERT, "<C-x><C-f>", function()
 	-- Strip leading delimiters for some languages
 	i, j = string.find(prefix, "[[(<'\"{]+")
 	if j then
-	   prefix = prefix:sub(j + 1)
-	   range.start = range.start + j
+		prefix = prefix:sub(j + 1)
+		range.start = range.start + j
 	end
 	local cmd = string.format("fzf --query '%s'", prefix:gsub("'", "'\\''"))
 
-    local proc = io.popen(cmd)
-    local out = proc:read()
-    local success, msg, status = proc:close()
+	local proc = io.popen(cmd)
+	local out = proc:read()
+	local success, msg, status = proc:close()
 	
 	if status ~= 0 or not out then
 		if err then vis:info(err) end
@@ -32,6 +32,6 @@ vis:map(vis.modes.INSERT, "<C-x><C-f>", function()
 	file:delete(range)
 	file:insert(pos, out)
 	win.selection.pos = pos + #out
-    vis:feedkeys("<vis-redraw>")
+	vis:feedkeys("<vis-redraw>")
 end, "Complete file path")
 
